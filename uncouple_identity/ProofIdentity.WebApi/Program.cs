@@ -17,6 +17,8 @@ builder.Services.RegisterIdentity();
 builder.Services.RegisterServices(configuration);
 builder.Services.RegisterUseCases();
 
+builder.Services.RegisterSwagger();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +30,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// NOTE: Authentication tem que vim primeiro que authorization,
+// ficar imposivel fazer a authenticação no sistema, vai saber.
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+// TODO: fazer um sistema de roles
+// TODO: fazer uma sistema que uma role tem uma clase propria
+// porem com metodos diferente
+// TODO: ver qual é o melhor lugar para deixar os metodos de login
+// Ex. na ILoginService ou na Repository

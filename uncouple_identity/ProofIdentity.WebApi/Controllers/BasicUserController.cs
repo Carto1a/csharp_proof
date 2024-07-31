@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ProofIdentity.Application.DTOs;
@@ -33,5 +34,12 @@ public class BasicUserController : ControllerBase
     {
         var users = await repo.GetAll();
         return Ok(users);
+    }
+
+    [Authorize]
+    [HttpGet("Acesso")]
+    public IActionResult Privato()
+    {
+        return Ok("nice");
     }
 }
