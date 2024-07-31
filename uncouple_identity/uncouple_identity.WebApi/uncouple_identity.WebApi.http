@@ -1,6 +1,0 @@
-@uncouple_identity.WebApi_HostAddress = http://localhost:5114
-
-GET {{uncouple_identity.WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
