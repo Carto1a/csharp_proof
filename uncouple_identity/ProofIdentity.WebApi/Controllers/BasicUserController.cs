@@ -42,4 +42,14 @@ public class BasicUserController : ControllerBase
     {
         return Ok("nice");
     }
+
+    [HttpPost("AddToRole/{roleId}/{userId}")]
+    public async Task<IActionResult> AddToRole(
+        /* [FromServices] BasicUserAddToRoleUseCase service, */
+        Guid roleId,
+        Guid userId)
+    {
+        /* await service.Handler(RoleId, UserId); */
+        return Ok();
+    }
 }

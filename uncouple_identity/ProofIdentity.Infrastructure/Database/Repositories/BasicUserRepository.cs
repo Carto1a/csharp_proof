@@ -65,26 +65,28 @@ public class BasicUserRepository
 
     public Task<List<BasicUser>> GetAll()
     {
-        var query = _context.Users.Select(x => new BasicUser{
-            Id = x.Id,
-            UserName = x.UserName,
-            NameCompleto = x.NomeCompleto,
-            Email = x.Email,
-            DataNascimento = x.DataNascimento,
-            Cpf = x.Cpf,
-            CriadoEm = x.CriadoEm
-        });
+        throw new NotImplementedException();
+        /* var query = _context.Users.Select(x => new BasicUser{ */
+        /*     Id = x.Id, */
+        /*     UserName = x.UserName, */
+        /*     NameCompleto = x.NomeCompleto, */
+        /*     Email = x.Email, */
+        /*     DataNascimento = x.DataNascimento, */
+        /*     Cpf = x.Cpf, */
+        /*     CriadoEm = x.CriadoEm */
+        /* }); */
 
-        var t = query.ToQueryString();
-        return query.ToListAsync();
+        /* var t = query.ToQueryString(); */
+        /* return query.ToListAsync(); */
     }
 
     public Task<BasicUser?> GetById(Guid id)
     {
-        return _context.Users
-            .Select(x => x.ToDomain())
-            .Where(x => x.Id == id)
-            .FirstOrDefaultAsync();
+        throw new NotImplementedException();
+        /* return _context.Users */
+        /*     .Select(x => x.ToDomain()) */
+        /*     .Where(x => x.Id == id) */
+        /*     .FirstOrDefaultAsync(); */
     }
 
     public void Update(BasicUser user)

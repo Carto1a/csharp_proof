@@ -12,7 +12,7 @@ using ProofIdentity.Infrastructure.Database;
 namespace ProofIdentity.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240731181403_Initial")]
+    [Migration("20240814133916_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -156,7 +156,80 @@ namespace ProofIdentity.WebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.BasicUserModel", b =>
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.AdminModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Info")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PessoaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PessoaId");
+
+                    b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.MedicoModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Crm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PessoaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UfCrm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PessoaId");
+
+                    b.ToTable("Medicos");
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.PacienteModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Convenio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PessoaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PessoaId");
+
+                    b.ToTable("Pacientes");
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.PessoaModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,19 +238,13 @@ namespace ProofIdentity.WebApi.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cpf")
+                    b.Property<string>("CPF")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateOnly>("DataNascimento")
-                        .HasColumnType("date");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -247,7 +314,7 @@ namespace ProofIdentity.WebApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.BasicUserModel", null)
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -256,7 +323,7 @@ namespace ProofIdentity.WebApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.BasicUserModel", null)
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,7 +338,7 @@ namespace ProofIdentity.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.BasicUserModel", null)
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -280,11 +347,44 @@ namespace ProofIdentity.WebApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.BasicUserModel", null)
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.AdminModel", b =>
+                {
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.MedicoModel", b =>
+                {
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("ProofIdentity.Infrastructure.Database.Models.PacienteModel", b =>
+                {
+                    b.HasOne("ProofIdentity.Infrastructure.Database.Models.PessoaModel", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pessoa");
                 });
 #pragma warning restore 612, 618
         }

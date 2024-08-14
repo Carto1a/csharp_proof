@@ -13,9 +13,9 @@ public static class EntityFrameworkInjection
         IConfiguration configuration)
     {
         return services
-            .AddDbContext<DataContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DbSqlServer"), b =>
-                    b.MigrationsAssembly("ProofIdentity.WebApi")))
+            .AddDbContext<DataContext>(
+                options => options.UseSqlServer(configuration.GetConnectionString("DbSqlServer"),
+                b => b.MigrationsAssembly("ProofIdentity.WebApi")))
 
             .AddScoped<IBasicUserReadRepository, BasicUserRepository>()
             .AddScoped<IBasicUserWriteRepository, BasicUserRepository>()

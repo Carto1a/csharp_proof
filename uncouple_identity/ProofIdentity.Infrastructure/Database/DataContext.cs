@@ -6,8 +6,12 @@ using ProofIdentity.Infrastructure.Database.Models;
 
 namespace ProofIdentity.Infrastructure.Database;
 public class DataContext
-: IdentityDbContext<BasicUserModel, IdentityRole<Guid>, Guid>
+: IdentityDbContext<PessoaModel, IdentityRole<Guid>, Guid>
 {
+    public DbSet<PacienteModel> Pacientes { get; set; }
+    public DbSet<AdminModel> Admins { get; set; }
+    public DbSet<MedicoModel> Medicos { get; set; }
+
     public DataContext(DbContextOptions<DataContext> options)
     : base(options) { }
 
