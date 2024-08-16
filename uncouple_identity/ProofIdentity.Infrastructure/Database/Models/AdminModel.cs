@@ -6,5 +6,5 @@ public class AdminModel : IEntityModel
     public DateTime CriadoEm { get; set; }
 
     public string Info { get; set; }
-    public PessoaModel Pessoa { get; set; }
+    public PessoaModel? Pessoa { get; set; }
 }
