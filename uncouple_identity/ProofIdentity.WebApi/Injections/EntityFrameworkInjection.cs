@@ -15,10 +15,11 @@ public static class EntityFrameworkInjection
         return services
             .AddDbContext<DataContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("DbSqlServer"),
-                b => b.MigrationsAssembly("ProofIdentity.WebApi")))
+                    b => b.MigrationsAssembly("ProofIdentity.Infrastructure")))
 
-            .AddScoped<IBasicUserReadRepository, BasicUserRepository>()
-            .AddScoped<IBasicUserWriteRepository, BasicUserRepository>()
+            .AddScoped<IAdminReadRepository, AdminRepository>()
+            .AddScoped<IAdminWriteRepository, AdminRepository>()
+            .AddScoped<ILoginRepository, LoginRepository>()
             ;
     }
 }

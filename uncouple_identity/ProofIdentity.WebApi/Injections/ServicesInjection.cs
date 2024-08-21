@@ -56,7 +56,6 @@ public static class ServicesInjection
         });
 
         return services
-            .AddScoped<ILoginService, IdentityLoginService>()
             .AddSingleton<IAuthenService>(
                 new JwtAuthenService(
                     jwtSecret,

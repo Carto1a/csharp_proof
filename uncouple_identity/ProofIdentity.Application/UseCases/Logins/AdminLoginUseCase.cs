@@ -7,14 +7,14 @@ namespace ProofIdentity.Application.UseCases.Logins;
 public class AdminLoginUseCase
 {
     private readonly IAdminReadRepository _readRepository;
-    private readonly ILoginService _loginService;
     private readonly IAuthenService _authService;
+    private readonly ILoginRepository _loginRepository;
 
-    public AdminLoginUseCase(IAdminReadRepository readRepository, IAuthenService authService, ILoginService loginService)
+    public AdminLoginUseCase(IAdminReadRepository readRepository, IAuthenService authService, ILoginRepository loginRepository)
     {
         _readRepository = readRepository;
         _authService = authService;
-        _loginService = loginService;
+        _loginRepository = loginRepository;
     }
 
     public async Task<string> Handler(LoginDto request)
@@ -23,7 +23,7 @@ public class AdminLoginUseCase
         if (admin == null)
             throw new ApplicationLayerException("CPF ou senha errado");
 
-        var isValidPassword = await _loginService.CheckPasswordAsync(admin, request.Senha);
+        var isValidPassword = await _loginRepository.IsPasswordCorrectAsync(admin, request.Senha);
         if (isValidPassword)
             throw new ApplicationLayerException("CPF ou senha errado");
 

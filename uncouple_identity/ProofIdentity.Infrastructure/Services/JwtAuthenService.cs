@@ -25,27 +25,6 @@ public class JwtAuthenService : IAuthenService
         _timeToExpire = timeToExpire;
     }
 
-    public Task<string> Authenticate(BasicUser user)
-    {
-        var authClaims = new List<Claim>
-        {
-            new("ID", user.Id.ToString()),
-            new(ClaimTypes.Name, user.NameCompleto),
-            new(ClaimTypes.Email, user.Email),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-        var token = GenerateToken(authClaims);
-
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-        return Task.FromResult(tokenString);
-    }
-
-    public Task<string> Desauthenticate(BasicUser user)
-    {
-        throw new NotImplementedException();
-    }
-
     public JwtSecurityToken GenerateToken(IEnumerable<Claim> authClaims)
     {
         var authSigningKey = new SymmetricSecurityKey(
@@ -59,5 +38,25 @@ public class JwtAuthenService : IAuthenService
             signingCredentials:
                 new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
+    }
+
+    public Task<string> Authenticate(Admin user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> Authenticate(Paciente user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> Authenticate(Medico user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> Desauthenticate(Pessoa user)
+    {
+        throw new NotImplementedException();
     }
 }

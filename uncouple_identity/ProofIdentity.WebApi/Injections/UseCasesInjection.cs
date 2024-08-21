@@ -1,4 +1,5 @@
-using ProofIdentity.Application.UseCases.BasicUser;
+using ProofIdentity.Application.UseCases.Logins;
+using ProofIdentity.Application.UseCases.Registers;
 
 namespace ProofIdentity.WebApi.Injections;
 public static class UseCasesInjection
@@ -7,8 +8,8 @@ public static class UseCasesInjection
         this IServiceCollection services)
     {
         return services
-            .AddScoped<BasicUserRegisterUseCase>()
-            .AddScoped<BasicUserLoginUseCase>()
+            .AddScoped<AdminRegisterUseCase>()
+            .AddScoped<AdminLoginUseCase>()
             ;
     }
 }

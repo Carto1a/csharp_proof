@@ -1,35 +1,34 @@
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.EntityFrameworkCore;
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Domain;
-using ProofIdentity.Domain.Repositories;
 using ProofIdentity.Infrastructure.Database.Models;
 using ProofIdentity.Infrastructure.Exceptions;
 using ProofIdentity.Infrastructure.Mappers;
 
 namespace ProofIdentity.Infrastructure.Database.Repository;
-public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
+public class LoginRepository : ILoginRepository
 {
     private readonly DataContext _context;
     private readonly UserManager<PessoaModel> _manager;
-    public AdminRepository(DataContext context, UserManager<PessoaModel> manager)
+    public LoginRepository(DataContext context, UserManager<PessoaModel> manager)
     {
         _context = context;
         _manager = manager;
     }
 
-    public async Task<Guid> CreateAsync(Admin admin, string password)
+    public async Task AddToRoleAsync(Pessoa user, Roles role)
     {
         try
         {
-            var model = admin.ToModel();
-            var result = await _manager.CreateAsync(model, password);
+            var model = user.ToModel();
+            var result = await _manager.AddToRoleAsync(model, role.ToString());
             if (!result.Succeeded)
             {
                 throw new RepositoryException(result.Errors);
             }
 
-            return admin.Id;
+            return;
         }
         catch (Exception error)
         {
@@ -37,23 +36,14 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
         }
     }
 
-    public Task<Admin> GetByCpf(string cpf)
+    public Task<bool> IsPasswordCorrectAsync(Pessoa user, string password)
     {
-        throw new NotImplementedException();
+        var model = user.ToModel();
+        return _manager.CheckPasswordAsync(model, password);
     }
 
-    public Task<Admin> GetByPessoaId(Guid pessoaId)
+    public Task<bool> LoginExistAsync(Pessoa user)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveAsync(Admin admin)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateAsync(Admin admin)
-    {
-        throw new NotImplementedException();
+        return _context.Users.AnyAsync(x => x.CPF == user.CPF);
     }
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofIdentity.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofIdentity.WebApi", "ProofIdentity.WebApi\ProofIdentity.WebApi.csproj", "{49627C7F-524C-4096-AD67-844E434A514E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofIdentity.CrossCutting", "ProofIdentity.CrossCutting\ProofIdentity.CrossCutting.csproj", "{CFA80DDF-EEE4-48EE-BA4F-778CDC54D64A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{49627C7F-524C-4096-AD67-844E434A514E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49627C7F-524C-4096-AD67-844E434A514E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49627C7F-524C-4096-AD67-844E434A514E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA80DDF-EEE4-48EE-BA4F-778CDC54D64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA80DDF-EEE4-48EE-BA4F-778CDC54D64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA80DDF-EEE4-48EE-BA4F-778CDC54D64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA80DDF-EEE4-48EE-BA4F-778CDC54D64A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
