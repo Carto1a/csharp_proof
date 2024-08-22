@@ -21,7 +21,7 @@ public class LoginRepository : ILoginRepository
     {
         try
         {
-            var model = user.ToModel();
+            var model = user.ToLoginModel();
             var result = await _manager.AddToRoleAsync(model, role.ToString());
             if (!result.Succeeded)
             {
@@ -38,7 +38,7 @@ public class LoginRepository : ILoginRepository
 
     public Task<bool> IsPasswordCorrectAsync(Pessoa user, string password)
     {
-        var model = user.ToModel();
+        var model = user.ToLoginModel();
         return _manager.CheckPasswordAsync(model, password);
     }
 

@@ -4,7 +4,7 @@ using ProofIdentity.Infrastructure.Database.Models;
 namespace ProofIdentity.Infrastructure.Mappers;
 public static class PessoaMapper
 {
-    public static PessoaModel ToModel(this Pessoa pessoa)
+    public static PessoaModel ToLoginModel(this Pessoa pessoa)
     {
         return new PessoaModel()
         {

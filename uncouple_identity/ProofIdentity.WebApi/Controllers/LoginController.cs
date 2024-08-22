@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ProofIdentity.Application.DTOs.Logins;
 using ProofIdentity.Application.UseCases.Logins;
+using ProofIdentity.Domain;
 
 namespace ProofIdentity.WebApi.Controllers;
 
@@ -14,14 +15,23 @@ public class LoginController : ControllerBase
         [FromServices] AdminLoginUseCase _useCase,
         [FromBody] LoginDto loginDto)
     {
-        var result = await _useCase.Handler(loginDto);
-        return Ok(result);
+        string token = loginDto.Role switch
+        {
+            Roles.Administrador => await _useCase.Handler(loginDto),
+            Roles.Paciente => await _useCase.Handler(loginDto),
+            Roles.Medico => await _useCase.Handler(loginDto),
+            _ => throw new NotImplementedException(),
+        };
+        return Ok(token);
     }
 
     [HttpPost("Administrador")]
-    public Task<IActionResult> LoginAdmin()
+    public async Task<IActionResult> LoginAdmin(
+        [FromServices] AdminLoginUseCase _useCase,
+        [FromBody] LoginDto loginDto)
     {
-        throw new NotImplementedException();
+        var token = await _useCase.Handler(loginDto);
+        return Ok(token);
     }
 
     [HttpPost("Paciente")]

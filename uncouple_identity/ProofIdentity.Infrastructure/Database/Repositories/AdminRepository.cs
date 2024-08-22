@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Domain;
@@ -22,12 +23,15 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
 
     public async Task<Guid> CreateAsync(Admin admin, string password)
     {
-        var pessoaModel = admin.ToModel();
+        PessoaModel pessoaModel = admin.ToLoginModel();
         var result = await _manager.CreateAsync(pessoaModel, password);
         if (!result.Succeeded)
         {
             throw new RepositoryException(result.Errors);
         }
+
+        AdminModel adminModel = admin.ToModel();
+        _ = await _context.Admins.AddAsync(adminModel);
 
         result = await _manager.AddToRoleAsync(pessoaModel, Roles.Administrador.ToString());
         if (!result.Succeeded)
@@ -38,12 +42,36 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
         return pessoaModel.Id;
     }
 
-    public Task<Admin> GetByCpf(string cpf)
+    public async Task<Admin?> GetByCpf(string cpf)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var query = _context.Admins
+                .AsNoTracking()
+                .Include(x => x.Pessoa)
+                .Where(x => x.Pessoa.CPF == cpf)
+                .Select(x => new Admin()
+                {
+                    Id = x.Id,
+                    Info = x.Info,
+                    NomeCompleto = x.Pessoa.NomeCompleto,
+                    CPF = x.Pessoa.CPF,
+                    SecurityStamp = Guid.Parse(x.Pessoa.SecurityStamp),
+                    PasswordHash = x.Pessoa.PasswordHash
+                });
+
+            var querySql = query.ToQueryString();
+            var admin = await query.FirstOrDefaultAsync();
+
+            return admin;
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryInternalException(error.Message);
+        }
     }
 
-    public Task<Admin> GetByPessoaId(Guid pessoaId)
+    public Task<Admin?> GetByPessoaId(Guid pessoaId)
     {
         throw new NotImplementedException();
     }

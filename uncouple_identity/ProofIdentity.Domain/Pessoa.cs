@@ -4,6 +4,7 @@ public class Pessoa : Entity
     public string NomeCompleto { get; set; }
     public string CPF { get; set; }
     public Guid SecurityStamp { get; set; }
+    public string PasswordHash { get; set; }
 
     public Pessoa() { }
 
@@ -13,4 +14,5 @@ public class Pessoa : Entity
         CPF = cpf;
         SecurityStamp = Guid.NewGuid();
     }
+
 }
