@@ -11,7 +11,8 @@ public static class PessoaMapper
             Id = pessoa.Id,
             NomeCompleto = pessoa.NomeCompleto,
             CPF = pessoa.CPF,
-            UserName = pessoa.CPF
+            UserName = pessoa.CPF,
+            SecurityStamp = pessoa.SecurityStamp.ToString()
         };
     }
 }

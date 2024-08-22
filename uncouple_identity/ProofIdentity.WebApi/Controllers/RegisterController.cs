@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
+using ProofIdentity.Application.DTOs.Registers;
+using ProofIdentity.Application.UseCases.Registers;
+
 namespace ProofIdentity.WebApi.Controllers;
 
 public class RegisterController : ControllerBase
@@ -17,8 +20,11 @@ public class RegisterController : ControllerBase
     }
 
     [HttpPost("Administrador")]
-    public Task<IActionResult> RegisterAdmin()
+    public async Task<IActionResult> RegisterAdmin(
+        [FromServices] AdminRegisterUseCase useCase,
+        [FromBody] AdminRegisterDto request)
     {
-        throw new NotImplementedException();
+        var result = await useCase.Handler(request);
+        return Ok(result);
     }
 }

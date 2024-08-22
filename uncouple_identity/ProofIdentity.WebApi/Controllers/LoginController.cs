@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
+using ProofIdentity.Application.DTOs.Logins;
+using ProofIdentity.Application.UseCases.Logins;
+
 namespace ProofIdentity.WebApi.Controllers;
 
 [ApiController]
@@ -7,9 +10,12 @@ namespace ProofIdentity.WebApi.Controllers;
 public class LoginController : ControllerBase
 {
     [HttpPost]
-    public Task<IActionResult> Login()
+    public async Task<IActionResult> Login(
+        [FromServices] AdminLoginUseCase _useCase,
+        [FromBody] LoginDto loginDto)
     {
-        throw new NotImplementedException();
+        var result = await _useCase.Handler(loginDto);
+        return Ok(result);
     }
 
     [HttpPost("Administrador")]

@@ -1,7 +1,7 @@
 namespace ProofIdentity.Application.DTOs.Registers;
 public record PessoaRegisterDto
-(
-    string NomeCompleto,
-    string CPF,
-    string Senha
-);
+{
+    public required string NomeCompleto { get; init; }
+    public required string CPF { get; init; }
+    public required string Senha { get; init; }
+}

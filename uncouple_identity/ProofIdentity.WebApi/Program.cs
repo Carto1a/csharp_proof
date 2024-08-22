@@ -1,3 +1,4 @@
+using ProofIdentity.Infrastructure.Database.Seeders;
 using ProofIdentity.WebApi.Injections;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,12 @@ builder.Services.RegisterSwagger();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedManager.Seed(services);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -39,8 +46,5 @@ app.MapControllers();
 
 app.Run();
 
-// TODO: fazer um sistema de roles
 // TODO: fazer uma sistema que uma role tem uma clase propria
 // porem com metodos diferente
-// TODO: ver qual é o melhor lugar para deixar os metodos de login
-// Ex. na ILoginService ou na Repository

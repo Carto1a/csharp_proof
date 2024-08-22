@@ -12,29 +12,30 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
 {
     private readonly DataContext _context;
     private readonly UserManager<PessoaModel> _manager;
-    public AdminRepository(DataContext context, UserManager<PessoaModel> manager)
+    private readonly ILoginRepository _loginRepository;
+    public AdminRepository(DataContext context, UserManager<PessoaModel> manager, ILoginRepository loginRepository)
     {
         _context = context;
         _manager = manager;
+        _loginRepository = loginRepository;
     }
 
     public async Task<Guid> CreateAsync(Admin admin, string password)
     {
-        try
+        var pessoaModel = admin.ToModel();
+        var result = await _manager.CreateAsync(pessoaModel, password);
+        if (!result.Succeeded)
         {
-            var model = admin.ToModel();
-            var result = await _manager.CreateAsync(model, password);
-            if (!result.Succeeded)
-            {
-                throw new RepositoryException(result.Errors);
-            }
+            throw new RepositoryException(result.Errors);
+        }
 
-            return admin.Id;
-        }
-        catch (Exception error)
+        result = await _manager.AddToRoleAsync(pessoaModel, Roles.Administrador.ToString());
+        if (!result.Succeeded)
         {
-            throw new RepositoryInternalException(error.Message);
+            throw new RepositoryException(result.Errors);
         }
+
+        return pessoaModel.Id;
     }
 
     public Task<Admin> GetByCpf(string cpf)

@@ -7,6 +7,6 @@ public static class PessoaMapper
 {
     public static Pessoa ToCheckLogin(this PessoaRegisterDto dto)
     {
-        return new Pessoa(dto.NomeCompleto, dto.NomeCompleto);
+        return new Pessoa(dto.NomeCompleto, dto.CPF);
     }
 }

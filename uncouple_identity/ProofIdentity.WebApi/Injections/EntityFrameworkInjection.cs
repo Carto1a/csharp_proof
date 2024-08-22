@@ -17,6 +17,7 @@ public static class EntityFrameworkInjection
                 options => options.UseSqlServer(configuration.GetConnectionString("DbSqlServer"),
                     b => b.MigrationsAssembly("ProofIdentity.Infrastructure")))
 
+            .AddScoped<IUnitOfWork, UnitOfWork>()
             .AddScoped<IAdminReadRepository, AdminRepository>()
             .AddScoped<IAdminWriteRepository, AdminRepository>()
             .AddScoped<ILoginRepository, LoginRepository>()

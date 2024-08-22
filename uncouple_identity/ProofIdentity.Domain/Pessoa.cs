@@ -3,6 +3,7 @@ public class Pessoa : Entity
 {
     public string NomeCompleto { get; set; }
     public string CPF { get; set; }
+    public Guid SecurityStamp { get; set; }
 
     public Pessoa() { }
 
@@ -10,5 +11,6 @@ public class Pessoa : Entity
     {
         NomeCompleto = nomeCompleto;
         CPF = cpf;
+        SecurityStamp = Guid.NewGuid();
     }
 }
