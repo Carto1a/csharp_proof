@@ -5,8 +5,8 @@ public class Admin : Pessoa
 
     public Admin() { }
 
-    public Admin(string info, string nomeCompleto, string cpf)
-    : base(nomeCompleto, cpf)
+    public Admin(string info, string nomeCompleto, string cpf, string email)
+    : base(nomeCompleto, cpf, email)
     {
         Info = info;
     }

@@ -7,8 +7,8 @@ public class Medico : Pessoa
 
     private Medico() { }
 
-    public Medico(string crm, string ufCrm, string nomeCompleto, string cpf)
-    : base(nomeCompleto, cpf)
+    public Medico(string crm, string ufCrm, string nomeCompleto, string cpf, string email)
+    : base(nomeCompleto, cpf, email)
     {
         Crm = crm;
         UfCrm = ufCrm;

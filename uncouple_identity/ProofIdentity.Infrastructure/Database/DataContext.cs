@@ -21,6 +21,11 @@ public class DataContext
     {
         base.OnModelCreating(builder);
 
+        builder.Ignore<Admin>();
+        builder.Ignore<Medico>();
+        builder.Ignore<Paciente>();
+        builder.Ignore<Pessoa>();
+
         builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }
 }

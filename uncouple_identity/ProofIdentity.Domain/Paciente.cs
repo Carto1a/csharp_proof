@@ -6,8 +6,8 @@ public class Paciente : Pessoa
 
     private Paciente() { }
 
-    public Paciente(string convenio, string nomeCompleto, string cpf)
-    : base(nomeCompleto, cpf)
+    public Paciente(string convenio, string nomeCompleto, string cpf, string email)
+    : base(nomeCompleto, cpf, email)
     {
         Convenio = convenio;
     }
