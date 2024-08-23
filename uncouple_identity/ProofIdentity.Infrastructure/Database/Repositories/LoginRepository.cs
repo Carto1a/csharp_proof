@@ -1,17 +1,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Domain;
-using ProofIdentity.Infrastructure.Database.Models;
 using ProofIdentity.Infrastructure.Exceptions;
-using ProofIdentity.Infrastructure.Mappers;
 
-namespace ProofIdentity.Infrastructure.Database.Repository;
+namespace ProofIdentity.Infrastructure.Database.Repositories;
 public class LoginRepository : ILoginRepository
 {
     private readonly DataContext _context;
-    private readonly UserManager<PessoaModel> _manager;
-    public LoginRepository(DataContext context, UserManager<PessoaModel> manager)
+    private readonly UserManager<ILoginUser> _manager;
+    public LoginRepository(DataContext context, UserManager<ILoginUser> manager)
     {
         _context = context;
         _manager = manager;
@@ -21,8 +20,7 @@ public class LoginRepository : ILoginRepository
     {
         try
         {
-            var model = user.ToLoginModel();
-            var result = await _manager.AddToRoleAsync(model, role.ToString());
+            var result = await _manager.AddToRoleAsync(user, role.ToString());
             if (!result.Succeeded)
             {
                 throw new RepositoryException(result.Errors);
@@ -38,8 +36,7 @@ public class LoginRepository : ILoginRepository
 
     public Task<bool> IsPasswordCorrectAsync(Pessoa user, string password)
     {
-        var model = user.ToLoginModel();
-        return _manager.CheckPasswordAsync(model, password);
+        return _manager.CheckPasswordAsync(user, password);
     }
 
     public Task<bool> LoginExistAsync(Pessoa user)

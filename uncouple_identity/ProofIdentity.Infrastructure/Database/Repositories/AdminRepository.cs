@@ -1,20 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using ProofIdentity.Application.DTOs;
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Domain;
 using ProofIdentity.Domain.Repositories;
-using ProofIdentity.Infrastructure.Database.Models;
 using ProofIdentity.Infrastructure.Exceptions;
-using ProofIdentity.Infrastructure.Mappers;
 
-namespace ProofIdentity.Infrastructure.Database.Repository;
+namespace ProofIdentity.Infrastructure.Database.Repositories;
 public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
 {
     private readonly DataContext _context;
-    private readonly UserManager<PessoaModel> _manager;
+    private readonly UserManager<Pessoa> _manager;
     private readonly ILoginRepository _loginRepository;
-    public AdminRepository(DataContext context, UserManager<PessoaModel> manager, ILoginRepository loginRepository)
+    public AdminRepository(DataContext context, UserManager<Pessoa> manager, ILoginRepository loginRepository)
     {
         _context = context;
         _manager = manager;
@@ -23,23 +22,43 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
 
     public async Task<Guid> CreateAsync(Admin admin, string password)
     {
-        PessoaModel pessoaModel = admin.ToLoginModel();
-        var result = await _manager.CreateAsync(pessoaModel, password);
+        var result = await _manager.CreateAsync(admin, password);
         if (!result.Succeeded)
         {
             throw new RepositoryException(result.Errors);
         }
 
-        AdminModel adminModel = admin.ToModel();
-        _ = await _context.Admins.AddAsync(adminModel);
-
-        result = await _manager.AddToRoleAsync(pessoaModel, Roles.Administrador.ToString());
+        result = await _manager.AddToRoleAsync(admin, Roles.Administrador.ToString());
         if (!result.Succeeded)
         {
             throw new RepositoryException(result.Errors);
         }
 
-        return pessoaModel.Id;
+        return admin.Id;
+    }
+
+    public async Task<IEnumerable<AdminDto>> GetAllDto()
+    {
+        try
+        {
+            var query = _context.Admins
+                .AsNoTracking()
+                .Select(x => new AdminDto()
+                {
+                    Id = x.Id,
+                    Nome = x.NomeCompleto,
+                    Cpf = x.CPF
+                });
+
+            var querySql = query.ToQueryString();
+            var adminList = await query.ToListAsync();
+
+            return adminList;
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryInternalException(error.Message);
+        }
     }
 
     public async Task<Admin?> GetByCpf(string cpf)
@@ -48,16 +67,40 @@ public class AdminRepository : IAdminWriteRepository, IAdminReadRepository
         {
             var query = _context.Admins
                 .AsNoTracking()
-                .Include(x => x.Pessoa)
-                .Where(x => x.Pessoa.CPF == cpf)
+                .Where(x => x.CPF == cpf)
                 .Select(x => new Admin()
                 {
                     Id = x.Id,
                     Info = x.Info,
-                    NomeCompleto = x.Pessoa.NomeCompleto,
-                    CPF = x.Pessoa.CPF,
-                    SecurityStamp = Guid.Parse(x.Pessoa.SecurityStamp),
-                    PasswordHash = x.Pessoa.PasswordHash
+                    NomeCompleto = x.NomeCompleto,
+                    CPF = x.CPF,
+                    SecurityStamp = Guid.NewGuid(),
+                    PasswordHash = x.PasswordHash
+                });
+
+            var querySql = query.ToQueryString();
+            var admin = await query.FirstOrDefaultAsync();
+
+            return admin;
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryInternalException(error.Message);
+        }
+    }
+
+    public async Task<AdminDto?> GetByCpfDto(string cpf)
+    {
+        try
+        {
+            var query = _context.Admins
+                .AsNoTracking()
+                .Where(x => x.CPF == cpf)
+                .Select(x => new AdminDto()
+                {
+                    Id = x.Id,
+                    Nome = x.NomeCompleto,
+                    Cpf = x.CPF
                 });
 
             var querySql = query.ToQueryString();

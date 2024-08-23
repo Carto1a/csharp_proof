@@ -9,14 +9,12 @@ public static class AdminMapper
         return new AdminModel()
         {
             Id = admin.Id,
-            Pessoa = new PessoaModel()
-            {
-                Id = admin.Id,
-                NomeCompleto = admin.NomeCompleto,
-                CPF = admin.CPF,
-                UserName = admin.CPF,
-                SecurityStamp = admin.SecurityStamp.ToString()
-            },
+            Info = admin.Info,
+            NomeCompleto = admin.NomeCompleto,
+            CPF = admin.CPF,
+            CriadoEm = admin.CriadoEm,
+            UserName = admin.CPF,
+            SecurityStamp = admin.SecurityStamp.ToString()
         };
     }
 }

@@ -1,3 +1,4 @@
+using ProofIdentity.Application.UseCases.Agendamentos;
 using ProofIdentity.Application.UseCases.Logins;
 using ProofIdentity.Application.UseCases.Registers;
 
@@ -10,6 +11,7 @@ public static class UseCasesInjection
         return services
             .AddScoped<AdminRegisterUseCase>()
             .AddScoped<AdminLoginUseCase>()
+            .AddScoped<AgendamentoCreateUseCase>()
             ;
     }
 }

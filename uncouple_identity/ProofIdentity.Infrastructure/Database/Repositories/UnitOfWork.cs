@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Infrastructure.Exceptions;
 
-namespace ProofIdentity.Infrastructure.Database.Repository;
+namespace ProofIdentity.Infrastructure.Database.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _context;

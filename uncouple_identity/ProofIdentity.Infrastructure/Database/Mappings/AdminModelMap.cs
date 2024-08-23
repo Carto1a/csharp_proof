@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProofIdentity.Infrastructure.Database.Models;
+
+using ProofIdentity.Domain;
 
 namespace ProofIdentity.Infrastructure.Mappings;
-public class AdminModelMap : IEntityTypeConfiguration<AdminModel>
+public class AdminModelMap : IEntityTypeConfiguration<Admin>
 {
-    public void Configure(EntityTypeBuilder<AdminModel> builder)
+    public void Configure(EntityTypeBuilder<Admin> builder)
     {
     }
 }

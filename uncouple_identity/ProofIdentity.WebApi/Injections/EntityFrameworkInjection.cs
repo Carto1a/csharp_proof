@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProofIdentity.Application.Repositories;
 using ProofIdentity.Domain.Repositories;
 using ProofIdentity.Infrastructure.Database;
-using ProofIdentity.Infrastructure.Database.Repository;
+using ProofIdentity.Infrastructure.Database.Repositories;
 
 namespace ProofIdentity.WebApi.Injections;
 public static class EntityFrameworkInjection
@@ -21,6 +21,8 @@ public static class EntityFrameworkInjection
             .AddScoped<IAdminReadRepository, AdminRepository>()
             .AddScoped<IAdminWriteRepository, AdminRepository>()
             .AddScoped<ILoginRepository, LoginRepository>()
+            .AddScoped<IAgendamentoReadRepository, AgendamentoRepository>()
+            .AddScoped<IAgendamentoWriteRepository, AgendamentoRepository>()
             ;
     }
 }

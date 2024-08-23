@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+
 using ProofIdentity.Infrastructure.Database;
 using ProofIdentity.Infrastructure.Database.Models;
 
@@ -8,7 +9,7 @@ public static class IdentityInjection
     public static IServiceCollection RegisterIdentity(
         this IServiceCollection services)
     {
-        services.AddIdentityCore<PessoaModel>()
+        services.AddIdentityCore<Pessoa>()
             .AddRoles<IdentityRole<Guid>>()
             .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
             .AddEntityFrameworkStores<DataContext>()
